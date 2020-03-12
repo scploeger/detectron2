@@ -32,9 +32,9 @@ class VisualizationDemo(object):
             num_gpu = torch.cuda.device_count()
             self.predictor = AsyncPredictor(cfg, num_gpus=num_gpu)
         else:
-            self.predictor = DefaultPredictor(cfg)
+            self.predictor = DefaultPredictor(cfg) #any time predictor is called in this class, we use defaul predictor
 
-    def run_on_image(self, image):
+    def run_on_image(self, image): #here is where network is called
         """
         Args:
             image (np.ndarray): an image of shape (H, W, C) (in BGR order).
@@ -67,9 +67,9 @@ class VisualizationDemo(object):
 
     def _frame_from_video(self, video):
         while video.isOpened():
-            success, frame = video.read()
+            success, frame = video.read() #.read() returns true (if a frame is read), and np arrray of frame
             if success:
-                yield frame
+                yield frame #yields (returns) the np array of the frame
             else:
                 break
 
@@ -126,7 +126,8 @@ class VisualizationDemo(object):
                 yield process_predictions(frame, predictions)
         else:
             for frame in frame_gen:
-                yield process_predictions(frame, self.predictor(frame))
+                yield process_predictions(frame, self.predictor(frame))#defaultPredictor is sent a frame as np array
+                print("put to queue")
 
 
 class AsyncPredictor:

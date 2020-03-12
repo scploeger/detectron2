@@ -129,7 +129,7 @@ def default_setup(cfg, args):
         torch.backends.cudnn.benchmark = cfg.CUDNN_BENCHMARK
 
 
-class DefaultPredictor:
+class DefaultPredictor: 
     """
     Create a simple end-to-end predictor with the given config that runs on
     single device for a single input image.
@@ -193,8 +193,9 @@ class DefaultPredictor:
             image = torch.as_tensor(image.astype("float32").transpose(2, 0, 1))
 
             inputs = {"image": image, "height": height, "width": width}
-            predictions = self.model([inputs])[0]
-            return predictions
+            predictions = self.model([inputs])[0] #gets the image np array and runs the model on it
+            print("predictions")
+            return predictions #returns the predictions
 
 
 class DefaultTrainer(SimpleTrainer):

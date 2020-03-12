@@ -8,7 +8,7 @@ import cv2
 import tqdm
 
 from detectron2.config import get_cfg
-from detectron2.data.detection_utils import read_image
+from detectron2.data.detection_utils import read_image #read video most efficent way ffmpeg
 from detectron2.utils.logger import setup_logger
 
 from predictor import VisualizationDemo
@@ -76,17 +76,17 @@ if __name__ == "__main__":
 
     cfg = setup_cfg(args)
 
-    demo = VisualizationDemo(cfg)
+    demo = VisualizationDemo(cfg) 
 
     if args.input:
-        if len(args.input) == 1:
+        if len(args.input) == 1: #the name of the file- list of the videos to go thru
             args.input = glob.glob(os.path.expanduser(args.input[0]))
             assert args.input, "The input path(s) was not found"
         for path in tqdm.tqdm(args.input, disable=not args.output):
             # use PIL, to be consistent with evaluation
             img = read_image(path, format="BGR")
             start_time = time.time()
-            predictions, visualized_output = demo.run_on_image(img)
+            predictions, visualized_output = demo.run_on_image(img) #this**
             logger.info(
                 "{}: {} in {:.2f}s".format(
                     path,
@@ -144,7 +144,7 @@ if __name__ == "__main__":
                 isColor=True,
             )
         assert os.path.isfile(args.video_input)
-        for vis_frame in tqdm.tqdm(demo.run_on_video(video), total=num_frames):
+        for vis_frame in tqdm.tqdm(demo.run_on_video(video), total=num_frames): #for all the frames in the video, run the demo (visualizationDemo on them)
             if args.output:
                 output_file.write(vis_frame)
             else:
