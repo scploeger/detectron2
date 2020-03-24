@@ -12,7 +12,7 @@ download-vids
 *.diff
 *.mp4
 *.mkv
-
+*.pkl
 # compilation and distribution
 __pycache__
 _ext
