@@ -6,6 +6,7 @@ import os
 import time
 import cv2
 import tqdm
+import time
 
 from detectron2.config import get_cfg
 from detectron2.data.detection_utils import read_image #read video most efficent way ffmpeg
@@ -15,6 +16,7 @@ from predictor import VisualizationDemo
 
 # constants
 WINDOW_NAME = "COCO detections"
+start_time = -1
 
 
 def setup_cfg(args):
@@ -76,7 +78,7 @@ if __name__ == "__main__":
 
     cfg = setup_cfg(args)
 
-    demo = VisualizationDemo(cfg) 
+    demo = VisualizationDemo(cfg) #imported from predictor
 
     if args.input:
         if len(args.input) == 1: #the name of the file- list of the videos to go thru
@@ -86,7 +88,7 @@ if __name__ == "__main__":
             # use PIL, to be consistent with evaluation
             img = read_image(path, format="BGR")
             start_time = time.time()
-            predictions, visualized_output = demo.run_on_image(img) #this**
+            predictions, visualized_output = demo.run_on_image(img) #this** demo = VisulizationDemo(cfg)
             logger.info(
                 "{}: {} in {:.2f}s".format(
                     path,
@@ -145,6 +147,9 @@ if __name__ == "__main__":
             )
         assert os.path.isfile(args.video_input)
         for vis_frame in tqdm.tqdm(demo.run_on_video(video), total=num_frames): #for all the frames in the video, run the demo (visualizationDemo on them)
+            if(start_time== -1):
+                start_time = time.time()
+                print("start")
             if args.output:
                 output_file.write(vis_frame)
             else:
@@ -154,6 +159,7 @@ if __name__ == "__main__":
                     break  # esc to quit
         video.release()
         if args.output:
+            print("finished in %s seconds" % (time.time() - start_time))
             output_file.release()
         else:
             cv2.destroyAllWindows()

@@ -10,7 +10,7 @@ download-vids
 *.txt
 *.json
 *.diff
-
+*mp4 
 # compilation and distribution
 __pycache__
 _ext

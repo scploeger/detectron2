@@ -192,9 +192,10 @@ class DefaultPredictor:
             image = self.transform_gen.get_transform(original_image).apply_image(original_image)
             image = torch.as_tensor(image.astype("float32").transpose(2, 0, 1))
 
+            print(image.shape)
             inputs = {"image": image, "height": height, "width": width}
+            #print(inputs[0])
             predictions = self.model([inputs])[0] #gets the image np array and runs the model on it
-            print("predictions")
             return predictions #returns the predictions
 
 
